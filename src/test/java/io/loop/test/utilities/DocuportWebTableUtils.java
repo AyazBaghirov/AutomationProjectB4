@@ -52,4 +52,28 @@ public class DocuportWebTableUtils {
         }
         return element.getText().trim();
     }
+
+    /**
+     * Returns any field from a table based on the given email address
+     *
+     * @param driver
+     * @param emailAddress
+     * @param field
+     * @return
+     * @throws InterruptedException
+     */
+    public static String returnAnyFieldNewSwitch(WebDriver driver, String emailAddress, String field) throws InterruptedException {
+        String xpath = switch (field.toLowerCase()) {
+            case "full name" -> "//td[2][text()='" + emailAddress + "']/preceding-sibling::td//span[2]";
+            case "username" -> "//td[2][text()='" + emailAddress + "']/following-sibling::td[1]";
+            case "inviter" -> "//td[2][text()='" + emailAddress + "']/following-sibling::td[2]";
+            case "phone number" -> "//td[2][text()='" + emailAddress + "']/following-sibling::td[3]/span";
+            case "role" -> "//td[2][text()='" + emailAddress + "']/following-sibling::td[4]/span/span";
+            case "advisor" -> "//td[2][text()='" + emailAddress + "']/following-sibling::td[5]";
+            default -> throw new InterruptedException("No such field exists: " + field);
+        };
+
+        WebElement element = driver.findElement(By.xpath(xpath));
+        return element.getText().trim();
+    }
 }
